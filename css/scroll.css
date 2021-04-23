@@ -1,0 +1,9 @@
+#table-of-contents::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 0.5em;
+  background:#eee;
+}
+#table-of-contents::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(0,0,0,0.5);
+}
