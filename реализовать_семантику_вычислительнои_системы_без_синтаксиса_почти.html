@@ -227,6 +227,10 @@
       <div class="search">
         <input type="text" class="inp-search">
         <button type="submit" class="search-btn"></button>
+        <div class="main-links">
+          <a  target="_blank" href="https://www.youtube.com/" class="youtube-link"></a>
+          <a  target="_blank" href="https://koncentrator.club/watch/legacy-chto-nuzhno-znat-o-rabote-s-chuzhim-kodom" class="koncentrator-link"></a>
+        </div>
       </div>
     </div>
   </header>
@@ -252,7 +256,7 @@
 действие. Комментарий определён набором признаков
 </p>
 
-<ul class="org-ul">
+<ul class="org-ul ul-decorated">
 <li>Текст.</li>
 <li>Имя пользователя.</li>
 <li>Числоо отметок "Мне нравится" у комментария.</li>
@@ -262,7 +266,7 @@
 <p>
 Есть некоторый базовый набор утвеждений (операторов сравнения) для каждого признака:
 </p>
-<ul class="org-ul">
+<ul class="org-ul ul-decorated">
 <li>Число отметок "Мне нравится" на комментарии =, ≠, &gt;, &lt;, ≥, ≤ заданному числу</li>
 <li>Имя пользователя = заданной строке</li>
 <li>Имя пользователя содержит строку Х</li>
@@ -310,7 +314,7 @@
 <p>
 Булев оператор мы представим как структуру из двух полей:
 </p>
-<ul class="org-ul">
+<ul class="org-ul ul-decorated">
 <li>Оператор</li>
 <li>Массив операндов</li>
 </ul>
@@ -318,7 +322,7 @@
 <p>
 А операцию сравнения определим набором:
 </p>
-<ul class="org-ul">
+<ul class="org-ul ul-decorated">
 <li>Оператор</li>
 <li>Поле. <i>Свойство комментария, значение которого будем сравнивать</i></li>
 <li>Значение. <i>Константа,</i> <span class="underline">с которой</span> <i>будем сравнивать</i></li>
@@ -369,7 +373,7 @@
 Фактически, такая структура определяет функцию от 1го аргумента:
 комментария. Для начала определим функции ЯП, ответственные за каждую операцию:
 </p>
-<ul class="org-ul">
+<ul class="org-ul ul-decorated">
 <li><code>И(список значений подвыражений) ⇒ bool</code></li>
 <li><code>Или(список значений подвыражений) ⇒ bool</code></li>
 <li><code>Содержит(поле, значение, комментарий) ⇒ bool</code></li>
@@ -444,9 +448,9 @@
 <dt>tag</dt><dd><a href="категория_реализация_на_основе_модели.html#ID-0dfdd746-5e9d-4c9a-9f48-f522f3ff47c2">Категория:Реализация на основе модели</a></dd>
 </dl>
 </div>
-<div id="postamble" class="status">
+<footer class="footer">
+  <div id="postamble" class="status">
 
- 
     <div class="status-main">
       <p class="date"><p>Created: </p> 
     <p>Last edit: 2022-02-27 Вс 23:05</p></p>
@@ -461,10 +465,10 @@
     <div class="status-book">
       <p class="status-title">Book shelf:</p>
     <p>
-    <a  target="_blank" href="https://livrezon.com/shop/product/legacy-software"><img class="book-cover" src="https://storage.googleapis.com/livrezon-hot/files/users_uploads_compressed/image_jpg_640/N4bf2AhbQKCMdRdmXZa5Xg.jpeg" alt="Книга \"Legacy Software. Как заставить чужой код работать\""/></a>
+    <a href="https://livrezon.com/shop/product/legacy-software"><img class="book-cover" src="https://storage.googleapis.com/livrezon-hot/files/users_uploads_compressed/image_jpg_640/N4bf2AhbQKCMdRdmXZa5Xg.jpeg" alt="Книга \"Legacy Software. Как заставить чужой код работать\""/></a>
     </p>
     </div>
- 
-</div>
+    </div>
+</footer>
 </body>
 </html>
