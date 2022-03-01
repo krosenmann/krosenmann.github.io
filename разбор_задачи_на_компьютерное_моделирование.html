@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<!-- 2022-02-27 Вс 20:23 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Разбор задачи на компьютерное моделирование</title>
+<meta name="author" content="Roman Zayrullin" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+</style>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/scroll.css" />
+<script type="text/javascript" src="js/init.js"></script>
+</head>
+<body>
+  <header >
+    <div class="content">
+      <a href="index.html" class="logo">
+        <img src="img/logo.svg" alt="logo">
+        <p class="name">krosenmann's digital garden</p>
+      </a>
+      
+      <div class="search">
+        <input type="text" class="inp-search">
+        <button type="submit" class="search-btn"></button>
+      </div>
+    </div>
+  </header>
+<div id="content" class="content">
+
+<h1 class="title">Разбор задачи на компьютерное моделирование</h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>&#1057;&#1086;&#1076;&#1077;&#1088;&#1078;&#1072;&#1085;&#1080;&#1077;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#h:8055a1d9-4748-46f4-9ed5-59d9cffd80a4">1. Ежемесячные операции</a></li>
+<li><a href="#org49926fb">2. Окончание игры и подсчет результатов</a></li>
+<li><a href="#orgb196948">3. <span class="todo TODO">TODO</span> Параметризация функций обмена</a></li>
+<li><a href="#org5e725f2">4. <span class="todo TODO">TODO</span> Рассчет начальных условий шага симуляции</a></li>
+</ul>
+</div>
+</nav>
+<p>
+<i>Задача взята из книги «‎Этюды для программистов» Чарлза Уэзерелла 1982 (рус.)</i>
+</p>
+
+<p>
+Решением совета директоров крупного промышленного концерна вы назначены президентом компании. Компания владеет несколькими фабриками. Каждый месяц компания покупает сырье, обрабатывает его и продает изготовленную продукцию публике, ждущей ее с нетерпением. Вам теперь придется решать, сколько и каких товаров выпускать, стоит ли и когда именно расширять производственные мощности, как финансировать их расширение и как принять скромно-застенчивый вид, отчитываясь о незаконных прибылях. Перед тем как приступить к работе, вы строите модель промышленности в целом, чтобы в частном порядке отработать свою линию поведения. И вот какую игру вы в результате изобрели.
+Начальная ситуация
+</p>
+
+<p>
+Моделирование ведется с шагом по времени в один месяц. В начале игры
+каждый игрок (президент компании) получает две обычные фабрики, четыре
+единицы сырья и материалов (сокращенно ЕСМ), две единицы готовой
+продукции (сокращенно ЕГП) и 10000 долл. наличными. Игроки
+занумерованы от 1 до N, и в первом круге игрок 1 — старший. С каждым
+кругом (т. е. ежемесячно) роль старшего переходит к следующему по
+порядку номеров игроку, после N-го старшим становится опять первый
+(так что номер старшего в круге Т вычисляется по формуле (Т mod N) +
+1). На торгах при прочих равных условиях выигрывает самый старший
+игрок (тот, кто будет старшим в следующем круге).
+</p>
+
+<div id="outline-container-h:8055a1d9-4748-46f4-9ed5-59d9cffd80a4" class="outline-2">
+<h2 id="h:8055a1d9-4748-46f4-9ed5-59d9cffd80a4"><span class="section-number-2">1.</span> Ежемесячные операции</h2>
+<div class="outline-text-2" id="text-h:8055a1d9-4748-46f4-9ed5-59d9cffd80a4">
+<p>
+Описанные ниже сделки происходят каждый месяц и именно в таком
+порядке. Если в какой-то момент компания не может выполнить своих
+финансовых обязательств, она немедленно объявляется банкротом. Ее
+имущество пропадает, и она выходит из игры (так что лучше иметь
+наготове запас наличных). Все денежные расчеты происходят между
+отдельными игроками и одним общим банком. Невозможна передача денег
+прямо от игрока к игроку, что исключает сговор, направленный против
+какой-либо компании. Банк, кроме того, контролирует источники сырья и
+скупает всю готовую продукцию.
+</p>
+
+<ol class="org-ol">
+<li><b>Постоянные издержки</b>. Каждый игрок (в порядке убывания старшинства,
+начиная со старшего) платит 300 долл. за каждую имеющуюся у него
+ЕСМ, 500 долл. за каждую наличную ЕГП, 1000 долл. за владение
+каждой обычной фабрикой и 1500 долл. — за владение
+автоматизированной. Это постоянные ежемесячные издержки каждого
+игрока, даже если он в этом круге не предпринимает никаких других
+действий.</li>
+
+<li><p>
+<b>Определение обстановки на рынке</b>. Банк решает и сообщает игрокам,
+сколько ЕСМ продаст в этот раз и какова их минимальная
+цена. Объявляется также, сколько ЕГП в общей сложности будет
+закуплено и какова максимальная цена.
+</p>
+
+<table>
+<caption class="t-above"><span class="table-number">&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; 1.:</span> Таблица 6.1. Уровни цен на ЕСМ и ЕГП</caption>
+
+<colgroup>
+<col  class="org-right">
+
+<col  class="org-left">
+
+<col  class="org-right">
+
+<col  class="org-left">
+
+<col  class="org-right">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">Уровень</th>
+<th scope="col" class="org-left">ЕСМ</th>
+<th scope="col" class="org-right">Минимальная цена</th>
+<th scope="col" class="org-left">ЕГП</th>
+<th scope="col" class="org-right">Максимальная цена</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">1.0Р</td>
+<td class="org-right">$800</td>
+<td class="org-left">З.ОР</td>
+<td class="org-right">$6500</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">1.5Р</td>
+<td class="org-right">650</td>
+<td class="org-left">2.5Р</td>
+<td class="org-right">6000</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">2.0Р</td>
+<td class="org-right">500</td>
+<td class="org-left">2.0Р</td>
+<td class="org-right">5500</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">2.5Р</td>
+<td class="org-right">400</td>
+<td class="org-left">1.5Р</td>
+<td class="org-right">5000</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">З.ОР</td>
+<td class="org-right">300</td>
+<td class="org-left">1.0Р</td>
+<td class="org-right">4500</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+В табл. 6.1 приведены пять уровней предложения ЕСМ и спроса на ЕГП
+(обратите внимание, что с ростом одной из этих величин другая
+убывает), а также верхние и нижние границы цен для каждого
+случая. В число игроков Р не включены те, кто обанкротился, и Р
+может, таким образом, быть меньше N. Произведения 1.5Р и 2.5Р
+округляются до ближайшего целого с недостатком. В табл. 6.2
+приведена матрица вероятностей перехода, в соответствии с которой
+банк определяет новый месячный уровень спроса и предложения, исходя
+из прежнего. Предполагается, что в нулевом месяце уровень равен 3.
+</p>
+
+<!-- This HTML table template is generated by emacs 29.0.50 -->
+<table border="1">
+  <tr>
+    <td rowspan="2" align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+      &nbsp;Старый&nbsp;уровень&nbsp;
+    </td>
+    <td colspan="5" align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Новый&nbsp;уровень&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;3&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/3&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/6&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/3&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/4&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/4&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/3&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/4&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/4&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/3&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/4&nbsp;&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/12&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/6&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/3&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      &nbsp;1/3&nbsp;&nbsp;
+    </td>
+  </tr>
+</table></li>
+
+<li value="3">
+  <p>
+    <b>Заявки на сырье и материалы</b>. Каждый игрок тайно от других
+готовит заявку на ЕСМ на текущий месяц. В заявке указывается требуемое
+число ЕСМ и предлагается цена не ниже банковской минимальной (запрос
+нуля ЕСМ или предложение цены ниже минимальной автоматически исключает
+игрока из торгов в этом месяце). Все заявки раскрываются одновременно,
+и имеющиеся ЕСМ распределяются между игроками в порядке убывания
+предложенной цены. Если сырья не хватает на всех, заявки с
+предложением более низкой цены не удовлетворяются. При прочих равных
+условиях сырье достается самому старшему игроку. Игроки платят за
+сырье при его получении. Банк не сохраняет оставшееся после
+удовлетворения заявок сырье на следующий месяц.
+  </p>
+</li>
+
+<li>
+  <p>
+    <b>Производство продукции</b>. Все игроки по очереди (по убыванию
+старшинства, начиная со старшего) объявляют, сколько ЕСМ они
+собираются переработать в ЕГП в текущем месяце и на каких
+фабриках. Каждый игрок обязан тут же покрыть расходы на
+производство. Обычная фабрика может за месяц переработать одну ЕСМ
+при затратах в 2000 долл. Автоматизированная фабрика может либо
+сделать то же, либо переработать 2 ЕСМ при затратах в 3000
+долл. Конечно, чтобы переработать ЕСМ, их надо иметь.
+  </p>
+</li>
+
+<li>
+  <p>
+    <b>Продажа продукции</b>. При покупке банком у игроков ЕГП организуются
+примерно такие же торги, как и при продаже ЕСМ. Заявленные цены не
+должны превышать максимальную цену, установленную банком, причем
+банк покупает ЕГП в первую очередь у тех, кто заявил более низкую
+цену. При прочих равных условиях предпочтение отдается старшему
+игроку. Если предложение превышает спрос, наиболее дорогие ЕГП
+остаются непроданными. Игроки получают деньги за продукцию при ее
+продаже.
+  </p>
+</li>
+
+<li><p>
+  <b>Выплата ссудного процента</b>. Каждый игрок платит один процент от общей суммы 
+  непогашенных ссуд, в том числе и тех, которые будут погашены в текущем месяце.
+</p></li>
+
+<li>
+<p>
+  <b>Погашение ссуд</b>. Каждый игрок, получивший ссуду сроком до текущего месяца, 
+  должен ее погасить. Поскольку возвращение ссуд предшествует получению новых, 
+  платить надо наличными.
+</p> 
+</li>
+
+<li>
+<p>
+  <b>Получение ссуд</b>. Теперь каждый игрок может получить ссуду. Ссуды обеспечиваются 
+  имеющимися у игрока фабриками; под обычную фабрику дается ссуда 5000 долл., 
+  под автоматизированную — 10000 долл. Общая сумма непогашенных ссуд не может 
+  превышать половины гарантированного капитала, но в этих пределах можно свободно 
+  занимать. Банк немедленно выплачивает ссуду игроку. Срок погашения ссуды истекает 
+  через 12 месяцев — например, ссуду, взятую в 3-м месяце, возвращать надо в 15-м. 
+  Нельзя погашать ссуды раньше срока.
+</p>  
+</li>
+
+<li>
+<p>
+  <b>Заявки на строительство</b>. Игроки могут строить новые фабрики. Обычная фабрика 
+  стоит 5000 долл. и начинает давать продукцию на 5-й месяц после начала строительства; 
+  автоматизированная фабрика стоит 10 000 долл и дает продукцию на 7-й месяц после 
+  начала строительства. Обычную фабрику можно автоматизировать за 7000 долл., 
+  реконструкция продолжается 9 месяцев, все это время фабрика может работать 
+  как обычная. Половину стоимости фабрики надо платить в начале строительства, 
+  вторую половину — за месяц до начала выпуска продукции в этой же фазе цикла. 
+  Общее число имеющихся и строящихся фабрик у каждого игрока не должно превышать шести.
+</p>  
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org49926fb" class="outline-2">
+<h2 id="org49926fb"><span class="section-number-2">2.</span> Окончание игры и подсчет результатов</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Игра оканчивается после некоторого фиксированного числа кругов (13 или более) или когда обанкротятся все игроки, кроме одного. Чтобы подсчитать общий капитал компании, надо сложить стоимость всех фабрик (по цене, по которой их можно было бы построить заново), стоимость имеющихся у нее ЕСМ (по минимальной банковской цене текущего месяца), стоимость имеющихся ЕГП (по максимальной банковской цене текущего месяца) и имеющиеся у компании наличные. После этого надо вычесть общую сумму ссуд и предстоящих расходов по уже начатому строительству. Если к концу игры приходит несколько игроков, результаты считаются по их капиталам.
+</p>
+
+<p>
+Любой игрок в любой момент может узнать состояние дел любого другого игрока — его капитал, наличные, взятые ссуды, все, что касается готовой продукции, имеющихся и строящихся фабрик. Во время торгов игроки ничего не знают о заявках, сделанных другими, но, как только банк собрал все заявки, они обнародуются и количество купленных или проданных каждым игроком единиц становится известно всем. Игроки могут сами вести любые записи, но банк не предоставляет им никакой информации, кроме той, которая предусмотрена правилами игры.
+Построение формальной модели
+</p>
+
+<p>
+Из-за того, что это учебная задача, мы заранее знаем, что обладаем всей полнотой информации, равно, как и то, что вся предоставленная информация будет использована для решения, то есть избыточной информации здесь нет. 
+</p>
+
+<p>
+В первую очередь, все правила игры можно разбить на 2 большие группы:
+</p>
+
+<ul class="org-ul">
+<li>Действия в начале и по завершению игры (формальные признаки начала и окончания симуляции, а так же связанные действия)</li>
+<li>Правила ходов. То есть, непосредственно сама симуляция.</li>
+</ul>
+
+<p>
+Получаем схему, типичную для симуляций:
+</p>
+
+<ul class="org-ul">
+<li>Инициализация</li>
+<li>Условия завершения выполнены?</li>
+<li>Нет.  Игроки совершают действия из коробки с правилами</li>
+<li>Да. Завершить симуляцию.</li>
+</ul>
+
+<p>
+Начнем с условий завершения симуляции. 
+</p>
+
+<ul class="org-ul">
+<li>Прошло фиксированное число кругов (шагов симуляции). Это синтетическое условие, которое не относится к стимулируемому явлению.</li>
+<li>Обанкротились все игроки, кроме одного. А вот это уже похоже на доменное условие, разберемся.</li>
+</ul>
+
+<p>
+Находим в условие упоминание банкроства: «‎Если в какой-то момент компания не может выполнить своих финансовых обязательств, она немедленно объявляется банкротом. Ее имущество пропадает, и она выходит из игры». То есть, если переводить на язык процедуры игры, то эта фраза значит буквально «‎в пуле активных игроков остался один». То есть и это условие синтетическое, несмотря на его изначальную формулировку. 
+Разбор правил шагов и построение отношений.
+</p>
+
+<p>
+Все шаги заботливо перечислены автором задачи в пункте «‎Ежемесячные операции». Если присмотреться, то почти каждая операция является обменом. 
+</p>
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Операция</th>
+<th scope="col" class="org-left">Кто отдает</th>
+<th scope="col" class="org-left">Кому дает</th>
+<th scope="col" class="org-left">Что отдает</th>
+<th scope="col" class="org-left">Что получает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Издержки</td>
+<td class="org-left">Игрок</td>
+<td class="org-left">—</td>
+<td class="org-left">Некоторую сумму издержек (формула)</td>
+<td class="org-left">Право сделать ход</td>
+</tr>
+
+<tr>
+<td class="org-left">Заявка ЕСМ</td>
+<td class="org-left">Игрок</td>
+<td class="org-left">Банк</td>
+<td class="org-left">Деньги</td>
+<td class="org-left">ЕСМ</td>
+</tr>
+
+<tr>
+<td class="org-left">Продажа ЕГП</td>
+<td class="org-left">Игрок</td>
+<td class="org-left">Банк</td>
+<td class="org-left">ЕГП</td>
+<td class="org-left">деньги</td>
+</tr>
+
+<tr>
+<td class="org-left">Производство ЕГП</td>
+<td class="org-left">Игрок</td>
+<td class="org-left">—</td>
+<td class="org-left">ЕСМ + Деньги</td>
+<td class="org-left">ЕГП</td>
+</tr>
+
+<tr>
+<td class="org-left">Погашение ссуды</td>
+<td class="org-left">Игрок</td>
+<td class="org-left">Банк</td>
+<td class="org-left">Деньги (формула)</td>
+<td class="org-left">Погашенное фин. обязательство (т.е. единицу долга)</td>
+</tr>
+
+<tr>
+<td class="org-left">Выдача ссуды</td>
+<td class="org-left">Банк</td>
+<td class="org-left">Игрок</td>
+<td class="org-left">Деньги</td>
+<td class="org-left">Фин. обязательство от игрока.</td>
+</tr>
+
+<tr>
+<td class="org-left">Постройка (модернизация) фабрики</td>
+<td class="org-left">Игрок</td>
+<td class="org-left">—</td>
+<td class="org-left">Деньги</td>
+<td class="org-left">Новая фабрика</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Вот и готова первая модель: функция обмена ресурсов между  участниками симуляции.
+</p>
+
+<p>
+Отсюда можно сразу выделить функцию банкротизации — тот, кто не
+получил право сделать ход, становится банкротом. В условиях симуляции
+это означает выход из пула активных игроков.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb196948" class="outline-2">
+<h2 id="orgb196948"><span class="section-number-2">3.</span> <span class="todo TODO">TODO</span> Параметризация функций обмена</h2>
+</div>
+
+
+<div id="outline-container-org5e725f2" class="outline-2">
+<h2 id="org5e725f2"><span class="section-number-2">4.</span> <span class="todo TODO">TODO</span> Рассчет начальных условий шага симуляции</h2>
+<div class="outline-text-2" id="text-4">
+<dl class="org-dl">
+<dt>tags</dt><dd><a href="категория_анализ_условия_задачи.html#ID-ed6d2297-3479-44d1-b59b-f8fd4ca94414">Категория:анализ условия задачи</a></dd>
+</dl>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+  <div class="status-main">
+    <p class="date"><p>Created: </p> 
+  <p>Last edit: 2022-02-27 Вс 23:05</p></p>
+  <p >Contact me:
+   <a  target="_blank" href="https://twitter.com/krosenmann/"><img class="social-link" src="img/twitter.png" alt="twitter">
+   </a>
+   <a  target="_blank" href="https://github.com/krosenmann/"><img class="social-link" src="img/github-logo.png" alt="github"></a>
+   <a  target="_blank" href="https://vk.com/krosenmann/"><img class="social-link" src="img/vk.png" alt="vk"></a>
+  <a  target="_blank" href="mailto:krosenmann@gmail.com"><img class="social-link" src="img/email.png" alt="email"></a></p>
+  <p></p>
+  </div>
+  <div class="status-book">
+    <p class="status-title">Book shelf:</p>
+  <p>
+  <a  target="_blank" href="https://livrezon.com/shop/product/legacy-software"><img class="book-cover" src="https://storage.googleapis.com/livrezon-hot/files/users_uploads_compressed/image_jpg_640/N4bf2AhbQKCMdRdmXZa5Xg.jpeg" alt="Книга \"Legacy Software. Как заставить чужой код работать\""/></a>
+  </p>
+  </div>
+
+</div>
+</body>
+</html>
